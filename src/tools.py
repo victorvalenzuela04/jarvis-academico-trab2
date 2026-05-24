@@ -79,6 +79,19 @@ FERRAMENTAS = [
         "parametros": {"pergunta": "A pergunta a ser respondida com base nos materiais"},
     },
     {
+        "nome": "planejar_estudos",
+        "descricao": "Monta um plano de estudos personalizado combinando a agenda, "
+                     "as tarefas pendentes e os tópicos disponíveis nos materiais. "
+                     "Use quando o usuário pedir um plano, planejamento, cronograma "
+                     "ou quiser saber 'o que estudar', 'por onde começar', "
+                     "'como me preparar para a prova'.",
+        "parametros": {
+            "periodo": "Janela de tempo: 'hoje', 'amanha', 'semana', 'todos' "
+                       "ou data YYYY-MM-DD",
+            "foco":    "Tópico para priorizar no plano (opcional, ex: 'algoritmos')",
+        },
+    },
+    {
         "nome": "responder_diretamente",
         "descricao": "Use quando puder responder sem precisar de nenhuma fonte "
                      "(saudações, pequenas conversas, perguntas sobre o próprio JARVIS).",
@@ -132,6 +145,13 @@ def executar_ferramenta(nome: str, argumentos: dict) -> Any:
 
         elif nome == "buscar_material_rag":
             saida = rag.buscar_e_responder(argumentos["pergunta"])
+
+        elif nome == "planejar_estudos":
+            from src import planejador
+            saida = planejador.gerar_plano_estudos(
+                periodo = argumentos.get("periodo", "semana"),
+                foco    = argumentos.get("foco", ""),
+            )
 
         elif nome == "responder_diretamente":
             saida = argumentos.get("resposta", "")
