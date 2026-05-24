@@ -92,6 +92,17 @@ FERRAMENTAS = [
         },
     },
     {
+        "nome": "gerar_exercicios",
+        "descricao": "Gera questões de múltipla escolha sobre um tema, usando o "
+                     "conteúdo dos materiais de estudo. Use quando o usuário pedir "
+                     "'crie exercícios', 'me dá umas questões', 'quero praticar', "
+                     "'gere perguntas sobre X'.",
+        "parametros": {
+            "tema":       "Assunto das questões (ex: 'tabelas hash', 'recursão')",
+            "quantidade": "Quantas questões gerar (1 a 10, padrão 3)",
+        },
+    },
+    {
         "nome": "responder_diretamente",
         "descricao": "Use quando puder responder sem precisar de nenhuma fonte "
                      "(saudações, pequenas conversas, perguntas sobre o próprio JARVIS).",
@@ -151,6 +162,13 @@ def executar_ferramenta(nome: str, argumentos: dict) -> Any:
             saida = planejador.gerar_plano_estudos(
                 periodo = argumentos.get("periodo", "semana"),
                 foco    = argumentos.get("foco", ""),
+            )
+
+        elif nome == "gerar_exercicios":
+            from src import exercicios
+            saida = exercicios.gerar_exercicios(
+                tema       = argumentos.get("tema", ""),
+                quantidade = argumentos.get("quantidade", 3),
             )
 
         elif nome == "responder_diretamente":

@@ -69,6 +69,10 @@ def gerar_resposta_final(mensagem: str, ferramenta: str, saida) -> str:
         return saida.get("resposta", "")
     if ferramenta == "planejar_estudos" and isinstance(saida, dict):
         return saida.get("plano", "")
+    if ferramenta == "gerar_exercicios" and isinstance(saida, dict):
+        if "erro" in saida:
+            return saida["erro"]
+        return saida.get("exercicios", "")
 
     prompt = f"""O usuário perguntou: "{mensagem}"
 
