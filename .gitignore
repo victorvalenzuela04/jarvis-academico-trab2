@@ -1,0 +1,28 @@
+# Bytecode Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos gerados em tempo de execução
+index/*.pkl
+logs/*.log
+storage/*.json
+
+# Mantém as pastas no Git mesmo que vazias
+!index/.gitkeep
+!logs/.gitkeep
+!storage/.gitkeep
