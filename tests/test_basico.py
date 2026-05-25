@@ -3,7 +3,7 @@ Testes básicos do JARVIS Acadêmico.
 
 Foco: validar a lógica que NÃO depende de rede (agenda, tarefas,
 chunking). Os módulos que falam com o LLM são testados manualmente
-durante o uso normal --> não rodamos chamadas pagas em testes
+durante o uso normal — não rodamos chamadas pagas em testes
 automatizados.
 
 Como rodar:
@@ -141,6 +141,43 @@ class TestTools(unittest.TestCase):
         }
         self.assertTrue(obrigatorias.issubset(nomes),
                         f"Faltam ferramentas: {obrigatorias - nomes}")
+
+
+class TestQuiz(unittest.TestCase):
+    """Testes das funções puras do quiz (não exigem rede)."""
+
+    def test_normaliza_letras_simples(self):
+        from src import quiz
+        self.assertEqual(quiz.normalizar_resposta("a"), "a")
+        self.assertEqual(quiz.normalizar_resposta("B"), "b")
+        self.assertEqual(quiz.normalizar_resposta(" c "), "c")
+        self.assertEqual(quiz.normalizar_resposta("d)"), "d")
+
+    def test_normaliza_letras_em_frases(self):
+        from src import quiz
+        self.assertEqual(quiz.normalizar_resposta("letra a"), "a")
+        self.assertEqual(quiz.normalizar_resposta("alternativa b"), "b")
+        self.assertEqual(quiz.normalizar_resposta("acho que é c"), "c")
+
+    def test_normaliza_sem_letra_retorna_none(self):
+        from src import quiz
+        self.assertIsNone(quiz.normalizar_resposta(""))
+        self.assertIsNone(quiz.normalizar_resposta("não sei"))
+
+    def test_sumario_pontuacao_alta(self):
+        from src import quiz
+        respostas = [{"acertou": True, "parcial": False} for _ in range(5)]
+        texto = quiz.gerar_sumario([], respostas)
+        self.assertIn("5/5", texto)
+        self.assertIn("100%", texto)
+
+    def test_sumario_pontuacao_baixa(self):
+        from src import quiz
+        respostas = [{"acertou": False, "parcial": False} for _ in range(5)]
+        texto = quiz.gerar_sumario([], respostas)
+        self.assertIn("0/5", texto)
+        self.assertIn("0%", texto)
+        self.assertIn("revisar", texto.lower())
 
 
 if __name__ == "__main__":

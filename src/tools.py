@@ -103,6 +103,15 @@ FERRAMENTAS = [
         },
     },
     {
+        "nome": "sugerir_quiz",
+        "descricao": "Use quando o usuário expressar vontade de fazer um QUIZ "
+                     "INTERATIVO (e não apenas pedir exercícios escritos). Exemplos: "
+                     "'quero fazer um quiz', 'me testa sobre X', 'quero praticar X "
+                     "respondendo perguntas'. Esta ferramenta orienta o usuário a "
+                     "iniciar o quiz com o comando '/quiz <tema>'.",
+        "parametros": {"tema": "Tema sobre o qual o usuário quer fazer o quiz"},
+    },
+    {
         "nome": "responder_diretamente",
         "descricao": "Use quando puder responder sem precisar de nenhuma fonte "
                      "(saudações, pequenas conversas, perguntas sobre o próprio JARVIS).",
@@ -170,6 +179,18 @@ def executar_ferramenta(nome: str, argumentos: dict) -> Any:
                 tema       = argumentos.get("tema", ""),
                 quantidade = argumentos.get("quantidade", 3),
             )
+
+        elif nome == "sugerir_quiz":
+            tema_quiz = argumentos.get("tema", "").strip()
+            if tema_quiz:
+                saida = (f"Para iniciar o quiz interativo sobre '{tema_quiz}', "
+                         f"digite o comando:\n\n    /quiz {tema_quiz}\n\n"
+                         "O sistema vai gerar perguntas e avaliar suas respostas "
+                         "uma a uma, com feedback no final.")
+            else:
+                saida = ("Para iniciar um quiz interativo, digite:\n\n"
+                         "    /quiz <tema>\n\n"
+                         "Exemplo: /quiz tabelas hash")
 
         elif nome == "responder_diretamente":
             saida = argumentos.get("resposta", "")

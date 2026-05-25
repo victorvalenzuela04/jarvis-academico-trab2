@@ -73,6 +73,8 @@ def gerar_resposta_final(mensagem: str, ferramenta: str, saida) -> str:
         if "erro" in saida:
             return saida["erro"]
         return saida.get("exercicios", "")
+    if ferramenta == "sugerir_quiz":
+        return saida if isinstance(saida, str) else str(saida)
 
     prompt = f"""O usuário perguntou: "{mensagem}"
 
